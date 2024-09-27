@@ -42,7 +42,7 @@ var (
 	scedule = scheduler.Scedule{
 		Months:  []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
 		Weeks:   []int{1, 2, 3, 4, 5},
-		Days:    []int{1, 2, 3, 4, 5, 6, 7},
+		Days:    []int{0, 1, 2, 3, 4, 5, 6},
 		Hours:   []int{4},
 		Minutes: []int{0},
 	}
