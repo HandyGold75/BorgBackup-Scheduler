@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -10,7 +11,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HandyGold75/GOLib/cfg"
 	"github.com/HandyGold75/GOLib/scheduler"
 
 	"github.com/HandyGold75/GOLib/logger"
@@ -66,6 +66,24 @@ var (
 
 	lgr = logger.New("borgbackup.log")
 )
+
+func loadConfig() error {
+	execPath, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	execPathSplit := strings.Split(strings.ReplaceAll(execPath, "\\", "/"), "/")
+	execPath = strings.Join(execPathSplit[:len(execPathSplit)-1], "/")
+
+	bytes, err := os.ReadFile(execPath + "/borgbackup.json")
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(bytes, &Config); err != nil {
+		return err
+	}
+	return nil
+}
 
 func verifyVars() error {
 	if dir, err := os.Stat(args.RepoPath); os.IsNotExist(err) || !dir.IsDir() {
@@ -146,8 +164,7 @@ func main() {
 	lgr.UseSeperators = false
 	lgr.CharCountPerMsg = 20
 
-	cfg.FileName = "borgbackup.json"
-	if err := cfg.Load(&Config); err != nil {
+	if err := loadConfig(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
