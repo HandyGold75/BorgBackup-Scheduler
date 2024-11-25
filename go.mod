@@ -1,15 +1,14 @@
 module BorgBackup
 
-go 1.23.1
+go 1.23.3
 
 require (
-	github.com/HandyGold75/GOLib/logger v0.0.0-20241009120328-f1577c9597cd
-	github.com/HandyGold75/GOLib/scheduler v0.0.0-20241009120328-f1577c9597cd
-	github.com/alexflint/go-arg v1.5.1
+	github.com/HandyGold75/GOLib/argp v0.0.0-20241118134854-2fea11e6135e
+	github.com/HandyGold75/GOLib/logger v0.0.0-20241118134854-2fea11e6135e
+	github.com/HandyGold75/GOLib/scheduler v0.0.0-20241118134854-2fea11e6135e
 )
 
 require (
-	github.com/alexflint/go-scalar v1.2.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
-	golang.org/x/term v0.25.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/term v0.26.0 // indirect
 )
