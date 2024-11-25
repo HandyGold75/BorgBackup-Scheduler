@@ -11,11 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HandyGold75/GOLib/scheduler"
-
+	"github.com/HandyGold75/GOLib/argp"
 	"github.com/HandyGold75/GOLib/logger"
-
-	"github.com/alexflint/go-arg"
+	"github.com/HandyGold75/GOLib/scheduler"
 )
 
 type (
@@ -45,15 +43,19 @@ var (
 		Days:    []int{0, 1, 2, 3, 4, 5, 6},
 		Hours:   []int{4},
 		Minutes: []int{0},
+		// Hours:   []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23},
+		// Minutes: []int{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55},
 	}
 
-	args struct {
-		RepoPath    string `arg:"-r,--repopath" default:"/disk1" help:"Specify path to repo directory."`
-		BorgPath    string `arg:"-b,--borgpath" default:"/bin/borg" help:"Specify path to borg."`
-		Compression string `arg:"-c,--compression" default:"zstd,22" help:"Select compression algorithm."`
-		Awake       bool   `arg:"-a,--awake" help:"Prevent shutdown after backup has completed."`
-		Test        bool   `arg:"-t,--test" help:"Prevents any changes to repos"`
-	}
+	args = argp.Parse(struct {
+		Help        bool   `switch:"h,help"         opts:"help"         help:"Scheduler for BorgBackup"`
+		RepoPath    string `switch:"r,-repopath"    default:"/disk1"    help:"Specify path to repo directory."`
+		BorgPath    string `switch:"b,-borgpath"    default:"/bin/borg" help:"Specify path to borg."`
+		Compression string `switch:"c,-compression" default:"zstd,22"   help:"Select compression algorithm."`
+		Awake       bool   `switch:"a,-awake"                           help:"Prevent shutdown after backup has completed."`
+		Verbose     bool   `switch:"v,-verbose"                         help:"Be verbose."`
+		Test        bool   `switch:"t,-test"                            help:"Prevents any changes to repos"`
+	}{})
 
 	Config = Repos{
 		Repos: []Repo{{
@@ -139,7 +141,11 @@ func runBackup() {
 		go func(name string, ch chan string) {
 			lgr.Log("low", "Execute", "bash -c "+borgArgsWrapped)
 			if !args.Test {
-				if err := exec.Command("bash", "-c", borgArgsWrapped).Run(); err != nil {
+				cmd := exec.Command("bash", "-c", borgArgsWrapped)
+				if args.Verbose {
+					cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+				}
+				if err := cmd.Run(); err != nil {
 					lgr.Log("high", "Backup failed", repo.Name, err)
 				} else {
 					lgr.Log("high", "Backup success", repo.Name)
@@ -155,12 +161,6 @@ func runBackup() {
 }
 
 func main() {
-	arg.MustParse(&args)
-	if err := verifyVars(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
 	lgr.UseSeperators = false
 	lgr.CharCountPerMsg = 20
 
@@ -190,7 +190,12 @@ func main() {
 		}
 
 		lgr.Log("medium", "Execute", "shutdown")
-		err := exec.Command("sudo", "shutdown").Run()
+		cmd := exec.Command("sudo", "shutdown")
+		if args.Verbose {
+			cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+		}
+		err := cmd.Run()
+
 		if err != nil {
 			lgr.Log("high", "Failed to shutdown", err)
 			os.Exit(1)
