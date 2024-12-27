@@ -1,4 +1,4 @@
-*-gitignore
 *.bin
 *.exe
-borgbackup.json
+*.log
+*.json
