@@ -3,9 +3,9 @@ module BorgBackup
 go 1.23.3
 
 require (
-	github.com/HandyGold75/GOLib/argp v0.0.0-20241224145756-37234774eb31
-	github.com/HandyGold75/GOLib/logger v0.0.0-20241224145756-37234774eb31
-	github.com/HandyGold75/GOLib/scheduler v0.0.0-20241224145756-37234774eb31
+	github.com/HandyGold75/GOLib/argp v0.0.0-20241227083537-c15cff7ebd53
+	github.com/HandyGold75/GOLib/logger v0.0.0-20241227083537-c15cff7ebd53
+	github.com/HandyGold75/GOLib/scheduler v0.0.0-20241227083537-c15cff7ebd53
 )
 
 require (
