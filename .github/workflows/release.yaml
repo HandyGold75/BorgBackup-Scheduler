@@ -25,3 +25,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
+          extra_files: LICENSE README.md
+          project_path: .
+          binary_name: BorgBackup-Scheduler
