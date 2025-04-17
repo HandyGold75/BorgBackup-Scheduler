@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -12,6 +11,7 @@ import (
 	"time"
 
 	"github.com/HandyGold75/GOLib/argp"
+	"github.com/HandyGold75/GOLib/cfg"
 	"github.com/HandyGold75/GOLib/logger"
 	"github.com/HandyGold75/GOLib/scheduler"
 )
@@ -43,11 +43,9 @@ var (
 		Days:    []int{0, 1, 2, 3, 4, 5, 6},
 		Hours:   []int{4},
 		Minutes: []int{0},
-		// Hours:   []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23},
-		// Minutes: []int{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55},
 	}
 
-	args = argp.Parse(struct {
+	args = argp.ParseArgs(struct {
 		Help        bool   `switch:"h,help"         opts:"help"         help:"Scheduler for BorgBackup"`
 		RepoPath    string `switch:"r,-repopath"    default:"/disk1"    help:"Specify path to repo directory."`
 		BorgPath    string `switch:"b,-borgpath"    default:"/bin/borg" help:"Specify path to borg."`
@@ -68,24 +66,6 @@ var (
 
 	lgr = logger.New("borgbackup.log")
 )
-
-func loadConfig() error {
-	execPath, err := os.Executable()
-	if err != nil {
-		return err
-	}
-	execPathSplit := strings.Split(strings.ReplaceAll(execPath, "\\", "/"), "/")
-	execPath = strings.Join(execPathSplit[:len(execPathSplit)-1], "/")
-
-	bytes, err := os.ReadFile(execPath + "/borgbackup.json")
-	if err != nil {
-		return err
-	}
-	if err := json.Unmarshal(bytes, &Config); err != nil {
-		return err
-	}
-	return nil
-}
 
 func verifyVars() error {
 	if dir, err := os.Stat(args.RepoPath); os.IsNotExist(err) || !dir.IsDir() {
@@ -162,9 +142,14 @@ func runBackup() {
 
 func main() {
 	lgr.UseSeperators = false
-	lgr.CharCountPerMsg = 20
+	lgr.CharCountPerPart = 20
 
-	if err := loadConfig(); err != nil {
+	if err := cfg.Load("borgbackup", &Config); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if err := verifyVars(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -195,7 +180,6 @@ func main() {
 			cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 		}
 		err := cmd.Run()
-
 		if err != nil {
 			lgr.Log("high", "Failed to shutdown", err)
 			os.Exit(1)

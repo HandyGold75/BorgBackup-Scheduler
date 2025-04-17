@@ -25,19 +25,30 @@ Configuration follows this pattern:
 }
 ```
 
-Args:
+## Args
 
 ```text
-Usage: borgbackup.bin [--repopath REPOPATH] [--borgpath BORGPATH] [--compression COMPRESSION] [--awake] [--test]
+Usage: borgbackup.bin [-h] [-r <string>] [-b <string>] [-c <string>] [-a] [-v] [-t]
+        Scheduler for BorgBackup
 
-Options:
-  --repopath REPOPATH, -r REPOPATH
-                         Specify path to repo directory. [default: /disk1]
-  --borgpath BORGPATH, -b BORGPATH
-                         Specify path to borg. [default: /bin/borg]
-  --compression COMPRESSION, -c COMPRESSION
-                         Select compression algorithm. [default: zstd,22]
-  --awake, -a            Prevent shutdown after backup has completed.
-  --test, -t             Prevents any changes to repos
-  --help, -h             display this help and exit
+Help
+  -h -help          <bool>    (help)
+RepoPath
+  -r --repopath     <string>
+        Specify path to repo directory.
+BorgPath
+  -b --borgpath     <string>
+        Specify path to borg.
+Compression
+  -c --compression  <string>
+        Select compression algorithm.
+Awake
+  -a --awake        <bool>
+        Prevent shutdown after backup has completed.
+Verbose
+  -v --verbose      <bool>
+        Be verbose.
+Test
+  -t --test         <bool>
+        Prevents any changes to repos
 ```
