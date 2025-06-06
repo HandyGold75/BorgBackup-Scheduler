@@ -2,8 +2,8 @@ github.com/HandyGold75/GOLib/argp v0.0.0-20250604101412-b76642799b23 h1:qIaJPoKF
 github.com/HandyGold75/GOLib/argp v0.0.0-20250604101412-b76642799b23/go.mod h1:7LP3MYxUTb+Arz5+50xPWHjrNlMeaI5RUe5wXK+hPfw=
 github.com/HandyGold75/GOLib/cfg v0.0.0-20250604101412-b76642799b23 h1:L5rZYqqDZivhO84C13NMfqRVQeleK/s3eQZPO6SRUqI=
 github.com/HandyGold75/GOLib/cfg v0.0.0-20250604101412-b76642799b23/go.mod h1:Tl5miu1W5X88giviECsRF7cYJhbip5URBVamZSvUsB8=
-github.com/HandyGold75/GOLib/logger v0.0.0-20250604101412-b76642799b23 h1:dNX13j9626Y+pV4T2qbBxpIyvQhVvccPRaiYFgC9SlU=
-github.com/HandyGold75/GOLib/logger v0.0.0-20250604101412-b76642799b23/go.mod h1:xxrNWjvkbc6cbcNI73+GfD8Oalv2VbkRASjubWZLOes=
+github.com/HandyGold75/GOLib/logger v0.0.0-20250606131809-8916b8a43333 h1:nmaOtAs/vlJvyGOpWvq0ZkHGvYLjv0eApAF0oAewCo4=
+github.com/HandyGold75/GOLib/logger v0.0.0-20250606131809-8916b8a43333/go.mod h1:022w5BuRxuHu6SRDtpWE2yQMi2rQglX2dK+C84R6qMU=
 github.com/HandyGold75/GOLib/scheduler v0.0.0-20250604101412-b76642799b23 h1:vDoBEmGqgfvG0Lxk37kd+bpAoLI4y5J0sAeeLWsJql8=
 github.com/HandyGold75/GOLib/scheduler v0.0.0-20250604101412-b76642799b23/go.mod h1:E5oHbXhO6jodeT84rsK9hxvhJ997QLWNTDGw/T8OsLA=
 golang.org/x/sys v0.33.0 h1:q3i8TbbEz+JRD9ywIRlyRAQbM0qF7hu24q3teo2hbuw=
