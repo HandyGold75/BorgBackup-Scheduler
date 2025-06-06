@@ -17,4 +17,5 @@ run:
 	exec "$(TARGET)/$(FILE)"
 
 clean:
-	rm "$(TARGET)/$(FILE)"
+	rm -f "$(TARGET)/$(FILE)"
+	rm -f "$(TARGET)/borgbackup.log"
