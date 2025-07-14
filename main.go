@@ -17,34 +17,15 @@ import (
 )
 
 type (
-	Repos struct {
-		Repos []Repo `json:"repos"`
-	}
-
 	Repo struct {
-		// Name of the Borg Repo.
-		Name string `json:"name"`
-
-		// Password of the Borg Repo.
-		Psw string `json:"psw"`
-
-		// Paths to add to the Borg Repo.
-		Sources []string `json:"sources"`
-
-		// Paths to exclude from the Borg Repo.
-		Excludes []string `json:"excludes"`
+		Name     string
+		Psw      string
+		Sources  []string
+		Excludes []string
 	}
 )
 
 var (
-	scedule = scheduler.Scedule{
-		Months:  []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
-		Weeks:   []int{1, 2, 3, 4, 5},
-		Days:    []int{0, 1, 2, 3, 4, 5, 6},
-		Hours:   []int{4},
-		Minutes: []int{0},
-	}
-
 	args = argp.ParseArgs(struct {
 		Help        bool   `switch:"h,help"         opts:"help"         help:"Scheduler for BorgBackup"`
 		RepoPath    string `switch:"r,-repopath"    default:"/disk1"    help:"Specify path to repo directory."`
@@ -55,13 +36,23 @@ var (
 		Test        bool   `switch:"t,-test"                            help:"Prevents any changes to repos"`
 	}{})
 
-	Config = Repos{
+	Config = struct {
+		Repos    []Repo
+		Schedule scheduler.Schedule
+	}{
 		Repos: []Repo{{
 			Name:     "",
 			Psw:      "",
 			Sources:  []string{},
 			Excludes: []string{},
 		}},
+		Schedule: scheduler.Schedule{
+			Months:  []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
+			Weeks:   []int{1, 2, 3, 4, 5},
+			Days:    []int{0, 1, 2, 3, 4, 5, 6},
+			Hours:   []int{4},
+			Minutes: []int{0},
+		},
 	}
 
 	lgr = logger.New("borgbackup.log")
@@ -156,7 +147,7 @@ func main() {
 
 	for {
 		nextBackup := time.Now()
-		if err := scheduler.SetNextTime(&nextBackup, &scedule); err != nil {
+		if err := scheduler.SetNextTime(&nextBackup, &Config.Schedule); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}

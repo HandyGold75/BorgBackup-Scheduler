@@ -3,10 +3,10 @@ module BorgBackup
 go 1.24.5
 
 require (
-	github.com/HandyGold75/GOLib/argp v0.0.0-20250606135728-a6262879070c
-	github.com/HandyGold75/GOLib/cfg v0.0.0-20250606135728-a6262879070c
-	github.com/HandyGold75/GOLib/logger v0.0.0-20250606135728-a6262879070c
-	github.com/HandyGold75/GOLib/scheduler v0.0.0-20250606135728-a6262879070c
+	github.com/HandyGold75/GOLib/argp v0.0.0-20250714112630-f8d52d8148bd
+	github.com/HandyGold75/GOLib/cfg v0.0.0-20250714113159-0103cbe2d6f4
+	github.com/HandyGold75/GOLib/logger v0.0.0-20250714112630-f8d52d8148bd
+	github.com/HandyGold75/GOLib/scheduler v0.0.0-20250714112630-f8d52d8148bd
 )
 
 require (
