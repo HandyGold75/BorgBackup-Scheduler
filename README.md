@@ -9,7 +9,7 @@ The schedule is configured in main.go (planned for move to JSON config).
 Repos are configured in the config file.
 Rest is configured by command line argument.
 
-Config file template will be generated at first run.
+Config file template will be generated at first run in `~/.config/golib/borgbackup.json`.
 Configuration follows this pattern:
 
 ```json
@@ -21,7 +21,14 @@ Configuration follows this pattern:
       "sources": ["/some/source/dir"],
       "excludes": ["/some/source/dir/*/.git"]
     }
-  ]
+  ],
+  "Schedule": {
+    "Months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    "Weeks": [1, 2, 3, 4, 5],
+    "Days": [0, 1, 2, 3, 4, 5, 6],
+    "Hours": [4],
+    "Minutes": [0]
+  }
 }
 ```
 
