@@ -68,13 +68,13 @@ func verifyVars() error {
 	}
 
 	allowedCompAlgs := []string{"", "lz4"}
-	for i := 1; i < 23; i++ {
-		allowedCompAlgs = append(allowedCompAlgs, "zstd,"+strconv.Itoa(i))
+	for i := range 22 {
+		allowedCompAlgs = append(allowedCompAlgs, "zstd,"+strconv.Itoa(i+1))
 	}
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		allowedCompAlgs = append(allowedCompAlgs, "zlib,"+strconv.Itoa(i))
 	}
-	for i := 0; i < 10; i++ {
+	for i := range 10 {
 		allowedCompAlgs = append(allowedCompAlgs, "lzma,"+strconv.Itoa(i))
 	}
 
@@ -126,7 +126,7 @@ func runBackup() {
 		}(repo.Name, ch)
 	}
 
-	for i := 0; i < execCount; i++ {
+	for range execCount {
 		lgr.Log("low", "Done backup", <-ch)
 	}
 }
@@ -154,26 +154,28 @@ func main() {
 
 		if time.Until(nextBackup) > time.Duration(0) {
 			lgr.Log("low", "Backup sceduled for", nextBackup.Format("2006-Jan-02 15:04:05"))
-			scheduler.SleepFor("Next backup in: ", time.Until(nextBackup), time.Second*time.Duration(1))
+			scheduler.SleepUntil("Next backup in: ", nextBackup, time.Second*time.Duration(1))
 		}
 
 		runBackup()
 
-		scheduler.SleepFor("Sleeping for: ", time.Until(nextBackup)+(time.Minute*time.Duration(1)), time.Second*time.Duration(1))
+		scheduler.SleepFor("Sleeping for: ", time.Minute, time.Second)
 
 		if args.Awake {
 			continue
 		}
 
 		lgr.Log("medium", "Execute", "shutdown")
-		cmd := exec.Command("sudo", "shutdown")
-		if args.Verbose {
-			cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
-		}
-		err := cmd.Run()
-		if err != nil {
-			lgr.Log("high", "Failed to shutdown", err)
-			os.Exit(1)
+		if !args.Test {
+			cmd := exec.Command("sudo", "shutdown")
+			if args.Verbose {
+				cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+			}
+			err := cmd.Run()
+			if err != nil {
+				lgr.Log("high", "Failed to shutdown", err)
+				os.Exit(1)
+			}
 		}
 		os.Exit(0)
 	}
