@@ -147,7 +147,7 @@ func main() {
 
 	for {
 		nextBackup := time.Now()
-		if err := scheduler.SetNextTime(&nextBackup, &Config.Schedule); err != nil {
+		if err := scheduler.SetNextTime(&nextBackup, Config.Schedule); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
