@@ -132,7 +132,7 @@ func runBackup() {
 }
 
 func main() {
-	lgr.UseSeperators = false
+	lgr.UseSeparators = false
 	lgr.CharCountPerPart = 20
 
 	if err := cfg.Load("borgbackup", &Config); err != nil {
