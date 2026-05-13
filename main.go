@@ -55,7 +55,7 @@ var (
 		},
 	}
 
-	lgr, _ = logger.NewRel("borgbackup.log")
+	lgr, _ = logger.NewRel("borgbackup")
 )
 
 func verifyVars() error {
